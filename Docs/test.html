@@ -1,0 +1,57 @@
+<html>
+	<head>
+		<title></title>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	
+	<script language="javascript">
+		
+		const token1 = "eyJraWQiOiJXTmhrTWR6QTVkNm5DVHN4QUU5YVl5UVwveldvSmdMWXlQQWFkcGNSOHNZTT0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI4ZTdjMWNkYy05MmYwLTRmNmQtYTkwMy1kOWM4Y2JmMTE0OTMiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX1BwbnlJeVRodSIsImNvZ25pdG86dXNlcm5hbWUiOiJzYUBkaWdpc2hhcmVzLmlvIiwiZ2l2ZW5fbmFtZSI6IlNoYWh6YWRTQSIsImF1ZCI6ImlxM2NiYmdvZ3BrYmhrcHB0Z3FobmQ0YmYiLCJldmVudF9pZCI6Ijk2ODUzMjBkLTg5ZjYtNDMyYi04MWE5LWNjN2FiOTg2ZGViMSIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjA1MDc1MzIxLCJleHAiOjE2MDUwNzg5MjEsImlhdCI6MTYwNTA3NTMyMSwiZmFtaWx5X25hbWUiOiJEaWdpU2hhcmVzIiwiZW1haWwiOiJzYUBkaWdpc2hhcmVzLmlvIn0.SQAQ2g9F5A5QqpY5wDAFTOyxBkI5gsd3xjnR6Q5Cnp0WctXEuxhJO-Qvz1Qb7nekc8FTRlmOiGrXHu-cdMTsubirtC8vjCcfDkgtHPg17ERzifLpTQt5smMDYr8Rwkjl2l5jIAi7ImDtkF4wu6B1C9TY1x82QizZHKl8RBybGxmP02ARbOwsoJB-g3cQEksNxZspY4HVIgpC_XhpujIhF5LaIA2H8HSPptUYx8xaNsQCmub1H8ahREDxZLuJegpBOVQSnOgAuVxhBjwhi-yTNYBgl-LzcVeBZU5kwsOf3CgA_hI0QOYTfLJw3FRKQWYv8V2-ZHawBZviwBcp_V3bkw";
+		
+		const refreshToken = "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAifQ.FCUXYTt7EhhUu6gG005SX6twUpCGuEz5FK9zxFkVgwDAxQSsK57aSlJBqm6Bu7EOn4WZ1fsHETTST_Ei_61Dh8bVY8-l5Sul4_MzHiOibpAy9Aotaf4pAoXM5qGc2ulJJ9fhV3_IWKLN35q8sT1XBxke4E-Ft5H6ud4wMW2oWZ65FeJ_IXyeEhsXPJkBlfQ0YsC67kiFaGsOo3aRVfApZckR8DmcZTB2ONYBHu2YL-HY5dWancWoZzqWx37a6IGi7GvN8xC4WkOv17d_sGb7kZmA8gVdgDw2PzG7sx-T6ms1czdyFuV1GylHayloNNDEKVT9xuVROagU_cm3k6Cflw.hUgaUAwhygTpbGfu.ds-V2ApzbTeOcUZPcZ7AOsSTc3j8PzJWdlT8hGLoGGBV6JcGUfuwc25g1HvGNYcCnLwvUGmyKK8zdeeq9ZpEpXzhW2VLiGspyT0NLUOsOM64BVSLxXHqKnmYP1mw73zmoprXWaNLBN22C9vh1YUARHzTMGaIVnwY3JpXrSfP3aOsgGy4eAmK5Cy_8Gyq13jP09Flu2ifU9qAiEfXhOCU0ep-2-zck1MqjkCJTXJQGkihr__P-uQ1qmD_cejMbTZjnHPg0pxrn6ZSM8p0pgSV1HT3kDLFy1KM1hranKDY6xZ2cZYZLwAP0Fcby2AolGphMmAyrk3SrQlokeo_wb6Yg6gHkqhjvBFFiYP14eeiBpXM4EaPpZDwSjtOrHuxVQ1C0EHZcw3zI5dByfk__X0WfM44DumRceQO6PvmOmLM5wpTDWm4dcUc-RNfLjHNtPHAS5vsGd-HqO0iEFn4zPlD2G36Ty6PxVzU7qey03CkrGV6jcXRhj_C26mOxzyKlUtM2ng79HkAJNafEp5JazLXiXlbat93yuROgw93e0eWgCosp40rblKRfRfGlRYrIyivYjL3YxPoVWNEykwvdA3RVBwrRq4mUavShAJdADU9pdbQQmuvXGhIlclNQn3XAVK3bkWoBoybt27aIRZoVt1eynek2UvArESF893E9x6ngBtZ2R2YPTZJzAxu4BmM9A0CMG-EmEImuuyGLAuRzU30x-Lc7EDyeKVUqX9QkgapRauYHlqxbIzJMJVLURygbReCq1fGncsz2OeB6Ay6AhePi9aalpdKJV46jVobPWMXAiPKbhcaRGRCXGlW63_tNPD3WMbrYDSKaNRR1nl8sWczd0YYNRHWm87-iTMMyzsbTqeH9ljqMdMxoWkKEIK4Jxg8xrwc3Pe7hszIqNCivePGC7wTtQ6-GG5yU0rEKnEyaCldF7lPMLPcZVtasXpEw-Yd1CBBj1CrkMxZP_h8-L3spFZfpPIShKdgMM9cTdjz8xSlw7ixrujnROVDvey8nn3bgEi8WtkCSTmcGt1_x493JJZwntBb5ZxA0OX0XVIaTW0z3ddYgz23HWooZD_fSL_v5LK2L7l3VxQxJSYCmov-PWTyY_DlJi08sRPriWMwR-1n1pd-keXFxPaIPDk0Hdq-jUHpKaXj4O9vUuUc5366nHTzberuwPRret74VeN3jFXu5sU0awkr8iTIdxm26NT4qYmgQqe59A6NFiAKIjjfGPmuTWUMiMcdwkGA94xbPuxEvkvMXgI3QjtxtUdGABgE7Im7R4kuYCDB4w_VJp3v.M-2AxncBx5a-wH6XJQa_UA";
+
+
+		$(document).ready(function() {
+		
+	
+		});
+		
+		
+		function send() {
+				
+			//var redirect = 'https://staging.digishares.io/ssologin?firstName=SSO&lastName=Test6&email=testsso6@hotmail.com';
+			var redirect = 'http://testingserver.com:3001/ssologin?firstName=ShahzadSA&lastName=DigiShares&email=sa@digishares.io&propertyId=126';
+			//var redirect = 'https://redswan.host/ssologin?firstName=Shahzad&lastName=Aslam&email=shahzad@hotmail.com';
+			$.redirectPost(redirect, {"accessToken": token1, "refreshToken": refreshToken});
+		
+		}
+		
+		
+		// jquery extend function
+		$.extend(
+		{
+		    redirectPost: function(location, args)
+		    {
+			var form = '';
+			$.each( args, function( key, value ) {
+			    form += '<input type="hidden" name="'+key+'" value="'+value+'">';
+			});
+
+			
+			$('<form action="'+location+'" method="POST">'+form+'</form>').appendTo('body').submit();
+		    }
+		});		
+		
+		
+	</script>
+		
+</head>
+
+<body>
+
+	Go to this link <br ><br >
+	
+	<span onclick="send()"> <b> this is a value  </b>   </span>
+
+</body>
+</html>
