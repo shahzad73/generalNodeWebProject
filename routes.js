@@ -12,6 +12,7 @@ router.get('/auth/getData', authController.get_user_data);
 router.get('/auth/checkJWTToken', authController.check_jwt_token);
 
 router.get('/docusign', docusign.test);
+router.get('/docusignreturn', docusign.reutrnurl);
 
 module.exports = router;
 
