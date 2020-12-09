@@ -1,37 +1,33 @@
 const docusign = require('docusign-esign');
-const fs = require('fs');
-const path  = require('path');
-
-const base64 = require('base64url');
-const crypto = require('crypto');
-const signatureFunction = crypto.createSign('RSA-SHA256');
+const request = require("request"),       // request module
+var     async = require("async"),       // async module    
 
 
 exports.test = async function(req, res){
-    
-var     async = require("async"),       // async module
-    request = require("request"),       // request module
-    email = "shahzad_73@yahoo.com",              // your account email
+
+const email = "shahzad_73@yahoo.com",              // your account email
     password = "abc@123456",         // your account password
     integratorKey = "7b1338e4-8a21-4a6a-af6c-3a1957a23971",    
-    recipientName = "shahzad73@hotmail.com",          // recipient (signer) name
-    templateId = "2e744f08-9dd4-4822-81ba-c4a272bb6de7",    
-    templateRoleName = "Signer",        // template role that exists on template referenced above
-    baseUrl = "",               // we will retrieve this
-    envelopeId = "bc14310c-57c0-4168-91be-1fb71ea24c1c";            // created from step 2
+    templateId = "2e744f08-9dd4-4822-81ba-c4a272bb6de7",        
+    linkToDOcuSignLoginServer = 'https://demo.docusign.net/restapi/v2/login_information',
 
-    
+    envelopeId = "bc14310c-57c0-4168-91be-1fb71ea24c1c",            // created from step 2
+
+    recipientName = "shahzad73@hotmail.com",          // recipient (signer) name
+    templateRoleName = "Signer",        // template role that exists on template referenced above
+    baseUrl = "";               // we will retrieve this
+
+
 async.waterfall(
     [
         //////////////////////////////////////////////////////////////////////
         // Step 1 - Login (used to retrieve accountId and baseUrl)
         //////////////////////////////////////////////////////////////////////
         function(next) {
-            var url = "https://demo.docusign.net/restapi/v2/login_information";
             var body = "";  // no request body for login api call
 
             // set request url, method, body, and headers
-            var options = initializeRequest(url, "GET", body, email, password);
+            var options = initializeRequest(linkToDOcuSignLoginServer, "GET", body, email, password);
 
             // send the request...
             request(options, function(err, res, body) {
@@ -47,18 +43,45 @@ async.waterfall(
         // Step 2 - Send envelope with one Embedded recipient (using clientUserId property)
         //////////////////////////////////////////////////////////////////////
         function(next) {
-            var url = baseUrl + "/envelopes";
-            var body = JSON.stringify({
+            
+            var jsonParameters = {
                 "emailSubject": "DocuSign API call - Embedded Sending Example",
                 "templateId": templateId,
                 "templateRoles": [{
                     "email": email,
                     "name": recipientName,
                     "roleName": templateRoleName,
-                    "clientUserId": "1001"  // user-configurable
+                    "clientUserId": "1001",  // user-configurable
+                    "tabs": {
+                          "textTabs": [
+                            {
+                                  "value": "Shahzad Aslam ",
+                                  "width": 78,
+                                  "required": "true",
+                                  "locked": "true",
+                                  "documentId": "1",
+                                  "pageNumber": "1",
+                                  "xPosition": "200",
+                                  "yPosition": "50"
+                            },
+                            {
+                                  "tabLabel": "NameOfInvesor2",
+                                  "name": "NameOfInvesor",
+                                  "value": "8675309",
+                                  "documentId": "1",
+                                  "pageNumber": "1",                             
+                                  "required": "true",
+                                  "locked": "true",
+                            },
+                          ]                    
+                    },                    
+                                           
                 }],
                 "status": "sent"
-            });
+            };
+
+            var url = baseUrl + "/envelopes";
+            var body = JSON.stringify(jsonParameters);
 
             // set request url, method, body, and headers
             var options = initializeRequest(url, "POST", body, email, password);
@@ -81,7 +104,7 @@ async.waterfall(
             var url = baseUrl + "/envelopes/" + envelopeId + "/views/recipient";
             var method = "POST";
             var body = JSON.stringify({
-                "returnUrl": "http://localhost:3000/docusignreturn",
+                "returnUrl": "http://localhost:3000/docusignreturn?id=122228",
                 "authenticationMethod": "email",
                 "email": email,
                 "userName": recipientName,
@@ -137,155 +160,7 @@ async.waterfall(
         }
         return true;
     }
-    
-    
-    //2e744f08-9dd4-4822-81ba-c4a272bb6de7         template id
-    
-    
-    /*
-   
-    dsApiClient.setBasePath("https://demo.docusign.net/restapi");
-    
-    
-        var MILLESECONDS_PER_SECOND = 1000,
-              JWT_SIGNING_ALGO = "RS256",
-              now = Math.floor(Date.now() / MILLESECONDS_PER_SECOND),
-              later = now + expiresIn,
-              jwt = require('jsonwebtoken'),
-              parsedScopes = Array.isArray(scopes) ? scopes.join(' ') : scopes;
-        var jwtPayload = {
-              iss: clientId,
-              aud: oAuthBasePath,
-              iat: now,
-              exp: later,
-              scope: parsedScopes,
-        };    
 
-    
-        const headerObj = {
-            alg: 'RS256',
-            typ: 'JWT'
-        };
-
-        const payloadObj = {
-            sub: '1234567890',
-            name: 'John Doe',
-            admin: true,
-            iat: 1516239022
-        };
-
-        const headerObjString = JSON.stringify(headerObj);
-        const payloadObjString = JSON.stringify(payloadObj);
-
-        const base64UrlHeader = base64(headerObjString);
-        const base64UrlPayload = base64(payloadObjString);
-
-        signatureFunction.write(base64UrlHeader + '.' + base64UrlPayload);
-        signatureFunction.end();
-
-        console.log(  signatureFunction.toString()  )
-    
-        // The private key without line breaks
-        const PRIV_KEY = fs.readFileSync(__dirname + '/Docs/docusign_privatekey.txt', 'utf8');
-
-        // Will sign our data and return Base64 signature (not the same as Base64Url!)
-        const signatureBase64 = signatureFunction.sign(PRIV_KEY, 'base64');
-        
-        const signatureBase64Url = base64.fromBase64(signatureBase64);
-
-    
-    
-    
-    dsApiClient.addDefaultHeader('Authorization', `Bearer ` + signatureBase64Url);
-    let envelopesApi = new docusign.EnvelopesApi(dsApiClient)
-      , results = null;
-
-
-    // Data for this method
-    // args.signerEmail 
-    // args.signerName 
-    // args.signerClientId
-    // demoDocsPath (module constant)
-    // pdf1File (module constant)
-
-    // document 1 (pdf) has tag /sn1/
-    //
-    // The envelope has one recipients.
-    // recipient 1 - signer
-  
-    let docPdfBytes;
-    // read file from a local directory
-    // The read could raise an exception if the file is not available!
-    docPdfBytes = fs.readFileSync(path.resolve("/home/shahzad/Temp", "sign.pdf"));
-  
-    // create the envelope definition
-    let env = new docusign.EnvelopeDefinition();
-    env.emailSubject = 'Please sign this document';
-  
-    // add the documents
-    let doc1 = new docusign.Document()
-      , doc1b64 = Buffer.from(docPdfBytes).toString('base64')
-      ;
-  
-    doc1.documentBase64 = doc1b64;
-    doc1.name = 'SigningForm'; // can be different from actual file name
-    doc1.fileExtension = 'pdf';
-    doc1.documentId = '3';
-  
-    // The order in the docs array determines the order in the envelope
-    env.documents = [doc1];
-  
-    // Create a signer recipient to sign the document, identified by name and email
-    // We set the clientUserId to enable embedded signing for the recipient
-    // We're setting the parameters via the object creation
-    let signer1 = docusign.Signer.constructFromObject({
-        email: "shahzad73@hotmail.com",
-        name: "Shahzad Aslam", 
-        clientUserId: "SH12345",
-        recipientId: 1    
-    });
-    
-    // Create signHere fields (also known as tabs) on the documents,
-    // We're using anchor (autoPlace) positioning
-    //
-    // The DocuSign platform seaches throughout your envelope's
-    // documents for matching anchor strings. 
-    let signHere1 = docusign.SignHere.constructFromObject({
-          anchorString: '/sn1/',
-          anchorYOffset: '10', anchorUnits: 'pixels',
-          anchorXOffset: '20'})
-      ;
-  
-    // Tabs are set per recipient / signer
-    let signer1Tabs = docusign.Tabs.constructFromObject({
-      signHereTabs: [signHere1]});
-    signer1.tabs = signer1Tabs;
-
-    // Add the recipient to the envelope object
-    let recipients = docusign.Recipients.constructFromObject({
-      signers: [signer1]});
-    env.recipients = recipients;
-
-    // Request that the envelope be sent by setting |status| to "sent".
-    // To request that the envelope be created as a draft, set to "created"
-    env.status = 'sent';
-      
-    let envelope = env;
-
-    try {
-            // Call Envelopes::create API method
-            // Exceptions will be caught by the calling function
-            results = await envelopesApi.createEnvelope("889d8b93-7f8a-4c95-a7b5-1ab040f9dfbc", {envelopeDefinition: envelope});
-
-            let envelopeId = results.envelopeId;
-            res.send(`Envelope was created. EnvelopeId ${envelopeId}`);
-    } catch(err) {
-            console.log(err)
-    }
-    */
-    
-
-    
 }
 
 exports.reutrnurl = function(req, res) {
