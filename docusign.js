@@ -1,6 +1,6 @@
 const docusign = require('docusign-esign');
-const request = require("request"),       // request module
-var     async = require("async"),       // async module    
+const request = require("request");       // request module
+const async = require("async");       // async module    
 
 
 exports.test = async function(req, res){
@@ -11,13 +11,15 @@ const email = "shahzad_73@yahoo.com",              // your account email
     templateId = "2e744f08-9dd4-4822-81ba-c4a272bb6de7",        
     linkToDOcuSignLoginServer = 'https://demo.docusign.net/restapi/v2/login_information',
 
-    envelopeId = "bc14310c-57c0-4168-91be-1fb71ea24c1c",            // created from step 2
-
     recipientName = "shahzad73@hotmail.com",          // recipient (signer) name
-    templateRoleName = "Signer",        // template role that exists on template referenced above
-    baseUrl = "";               // we will retrieve this
+    templateRoleName = "Signer";        // template role that exists on template referenced above
 
 
+var baseUrl = "";               // we will retrieve this
+var envelopeId = "";            // created from step 2
+
+    
+    
 async.waterfall(
     [
         //////////////////////////////////////////////////////////////////////
@@ -93,6 +95,7 @@ async.waterfall(
                 }
                 // parse the envelopeId value from the response
                 envelopeId = JSON.parse(body).envelopeId;
+                console.log(  "............. >" + envelopeId  );
                 next(null); // call next function
             });
         },
