@@ -7,10 +7,10 @@ global.navigator = () => null;
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
 
 //redswan
-//const poolData = { UserPoolId: "us-east-1_rfyfyirDL",  ClientId: "6en1dkofmfim42po7ucv6auseb" };
+const poolData = { UserPoolId: "us-east-1_rfyfyirDL",  ClientId: "6en1dkofmfim42po7ucv6auseb" };
 
 //my settings
-const poolData = { UserPoolId: "us-east-1_PpnyIyThu", ClientId: "iq3cbbgogpkbhkpptgqhnd4bf" };
+//const poolData = { UserPoolId: "us-east-1_PpnyIyThu", ClientId: "iq3cbbgogpkbhkpptgqhnd4bf" };
 
 
 // http://127.0.0.1:3000/auth/register?name=sa@digishares.io&email=sa@digishares.io&password=Allahis@11&given_name=ShahzadSA&family_name=DigiShares
@@ -57,6 +57,7 @@ exports.Login = function (body, callback) {
         Username: userName,
         Pool: userPool
     }
+    console.log()
     var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
     cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: function (result) {

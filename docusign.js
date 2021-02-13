@@ -3,7 +3,7 @@ const request = require("request");       // request module
 const async = require("async");       // async module    
 
 
-exports.test = async function(req, res){
+exports.test = async function(req, res) {
 
 const email = "shahzad_73@yahoo.com",              // your account email
     password = "abc@123456",         // your account password
@@ -47,7 +47,7 @@ async.waterfall(
         function(next) {
             
             var jsonParameters = {
-                "emailSubject": "DocuSign API call - Embedded Sending Example",
+                "emailSubject": "DocuSign - RedSwan Contract Signing",
                 "templateId": templateId,
                 "templateRoles": [{
                     "email": email,
@@ -67,9 +67,9 @@ async.waterfall(
                                   "yPosition": "50"
                             },
                             {
-                                  "tabLabel": "NameOfInvesor2",
+                                  "tabLabel": "NameOfInvesor",
                                   "name": "NameOfInvesor",
-                                  "value": "8675309",
+                                  "value": "Shahzad Aslam",
                                   "documentId": "1",
                                   "pageNumber": "1",                             
                                   "required": "true",
